@@ -49,7 +49,7 @@ def check_length_titles(**kwargs):
 
         # Envía un correo electrónico con la información de la excepción
         subject = f"Warning en la tarea {task_id}"
-        body = f"Hemos registrado que {count} títulos tienen alta posibilidad de ser redundantes."
+        body = f"Hemos registrado que {count} título(s) tiene(n) alta posibilidad de ser redundante(s)."
         email_operator = EmailOperator(
             task_id="send_email",
             to=Variable.get("send_email_to"),

@@ -82,14 +82,14 @@ Por norma, todos las tareas envían correo si falla la ejecución.
 - Formato:
   - Subject: Error en la tarea ` {task_id} `
   - Body: Se produjo una excepción en la tarea ` {task_id} `: ` {exception} `
-- Ejemplo: ![Ejemplo excepcion tarea](https://drive.google.com/file/d/18hm61MR-F3QH4DcXverdX-aEPcWvrJ49/view?usp=sharing)
+- Ejemplo: ![Ejemplo excepcion tarea](https://i.ibb.co/31NZ8TK/ejemplo-excepcion-tarea.png)
 
-### Alerta de tarea
+### Alerta de tarea "check_length_titles"
 
 - Formato:
   - Subject: Warning en la tarea ` {task_id} `
-  - Body: Hemos registrado que ` {count} ` títulos tienen alta posibilidad de ser redundantes.
-- Ejemplo: ![Ejemplo alerta tarea](https://drive.google.com/file/d/1LdYSX97gxmPzlMDIa6HHhaNR2JsZPVl8/view?usp=sharing)
+  - Body: Hemos registrado que ` {count} ` título(s) tiene(n) alta posibilidad de ser redundante(s).
+- Ejemplo: ![Ejemplo alerta tarea](https://i.ibb.co/2vLJ0GL/ejemplo-alerta-tarea.png)
 
 
 ## Entregas

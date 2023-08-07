@@ -17,17 +17,26 @@ $ docker compose up --build
 
 Configuración de conexiones y variables dentro de la pestaña `Admin`.
 
-Variables:
+### Variables:
 
-- key: ` driver_class_path `
-- value: ` /tmp/drivers/postgresql-42.5.2.jar `
+- driver_class_path
+  * key: ` driver_class_path `
+  * value: ` /tmp/drivers/postgresql-42.5.2.jar `
+
+- spark_scripts_dir 
+  * key: ` spark_scripts_dir `
+  * value: ` /opt/airflow/scripts `
+
+- send_email_to 
+  * key: ` send_email_to `
+  * value: ` <admin email (quien recibirá las alertas y errores)> `
+
+- verify_titles 
+  * key: ` verify_titles `
+  * value: ` <número entero que se usa para verificar la tarea 'check_length_titles'. ej: 10> `
 
 
-- key: ` spark_scripts_dir `
-- value: ` /opt/airflow/scripts `
-
-
-Conexiones:
+### Conexiones:
 
 - spark_default
   * Conn Id: `spark_default`
@@ -45,6 +54,43 @@ Conexiones:
   * Password: `contraseña de redshift`
   * Port: `5439`
 
+### airflow.cfg
+
+Para el envío de correos se debe modificar el ` airflow.cfg `, específicamente el apartado de ` SMTP ` con sus valores para permitir el envío de correo.
+
+*Nota: Este archivo se encuentra dentro de la carpeta ` /config ` la cual es generada la primera vez que levante el contenedor (ver en __Instalación__).*
+
+
+## Secuencia
+
+- Procesa la fecha
+- Crea la tabla (si no está creada)
+- Limpian los datos
+- Procesa el ETL
+- Verifica en BD la longitud de los títulos
+  * Aquí se consulta la sentencia y se guarda valor en XCom
+- Notifica según parámetros
+  * Según el valor del XCom guardado anteriormente, compara con la variable de Airflow ` verify_titles ` y decide si notifica o no.
+
+Por norma, todos las tareas envían correo si falla la ejecución.
+
+
+## Excepciones y alertas
+
+### Excepción de ejecución de tarea
+
+- Formato:
+  - Subject: Error en la tarea ` {task_id} `
+  - Body: Se produjo una excepción en la tarea ` {task_id} `: ` {exception} `
+- Ejemplo: ![Ejemplo excepcion tarea](https://drive.google.com/file/d/18hm61MR-F3QH4DcXverdX-aEPcWvrJ49/view?usp=sharing)
+
+### Alerta de tarea
+
+- Formato:
+  - Subject: Warning en la tarea ` {task_id} `
+  - Body: Hemos registrado que ` {count} ` títulos tienen alta posibilidad de ser redundantes.
+- Ejemplo: ![Ejemplo alerta tarea](https://drive.google.com/file/d/1LdYSX97gxmPzlMDIa6HHhaNR2JsZPVl8/view?usp=sharing)
+
 
 ## Entregas
 Detallo los cambios principales conforme a cada entrega.
@@ -55,7 +101,11 @@ Detallo los cambios principales conforme a cada entrega.
 ### Segunda Entrega (semana 7 del curso | 30/06)
 - Trasformación de datos
 - Insertar datos trasformados
-### Segunda Entrega (semana 10 del curso | 20/07)
+### Tercera Entrega (semana 10 del curso | 20/07)
 - Docker compose
 - DAG
 - Airflow
+### Cuarta Entrega (Final) (semana 12 del curso | 06/08)
+- Excepciones
+- Envío de correos
+- Formateo de código
